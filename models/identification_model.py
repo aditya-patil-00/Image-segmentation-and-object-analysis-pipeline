@@ -22,15 +22,15 @@ def add_description_column(db_path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute("PRAGMA table_info(segmented_objects)")
+    cursor.execute("PRAGMA table_info(segmented_objects2)")
     columns = [col[1] for col in cursor.fetchall()]
     
     if 'description' not in columns:
         cursor.execute('''
-            ALTER TABLE segmented_objects
+            ALTER TABLE segmented_objects2
             ADD COLUMN description TEXT
         ''')
-        print("Added 'description' column to 'segmented_objects' table.")
+        print("Added 'description' column to 'segmented_objects2' table.")
     else:
         print("'description' column already exists.")
     
@@ -46,13 +46,13 @@ def main(db_path):
     cursor = conn.cursor()
 
     # Get all objects that need identification
-    cursor.execute("SELECT object_id, save_path FROM segmented_objects")
+    cursor.execute("SELECT object_id, save_path FROM segmented_objects2")
     objects = cursor.fetchall()
 
     for object_id, save_path in objects:
         description = generate_description(model, processor, save_path)
         cursor.execute('''
-            UPDATE segmented_objects
+            UPDATE segmented_objects2
             SET description = ?
             WHERE object_id = ?
         ''', (description, object_id))
@@ -64,6 +64,6 @@ def main(db_path):
 if __name__ == "__main__":
     curr_dir = os.getcwd()
     par_dir = os.path.dirname(curr_dir)
-    db_path = os.path.join(par_dir, 'data', 'segmented_objects.db')
+    db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
     add_description_column(db_path)
     main(db_path)

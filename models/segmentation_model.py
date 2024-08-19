@@ -42,7 +42,7 @@ def main(image_path):
 
     curr_dir = os.getcwd()
     par_dir = os.path.dirname(curr_dir)
-    db_path = os.path.join(par_dir, 'data', 'segmented_objects.db')
+    db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
 
     segment_obj.create_database(db_path)
 
@@ -53,7 +53,7 @@ def main(image_path):
     # Perform segmentation
     boxes, labels, scores = segment(model, processor, image)
     # Prepare the output path
-    out_path = os.path.join(par_dir, 'data', 'output', 'segmented.jpg')
+    out_path = os.path.join(par_dir, 'data', 'output', 'segmented2.jpg')
     # Visualize and save the segmented image
     visualize_segments(image_path, boxes, labels, scores, output_path=out_path)
 
@@ -61,7 +61,7 @@ def main(image_path):
     segmented_objects_dir = os.path.join(par_dir, 'data', 'segmented_objects')
     extract_and_save_objects(image, boxes, segmented_objects_dir, db_path)
 
-img_path = os.path.join(par_dir, 'data', 'input_images', 'sample image.jpg')
+img_path = os.path.join(par_dir, 'data', 'input_images', 'sample image2.jpg')
 
 if __name__ == "__main__":
     image_path = img_path
