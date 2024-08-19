@@ -1,5 +1,6 @@
 import os
 from PIL import Image
+from spellchecker import SpellChecker
 
 def filter_detections(detections, threshold=0.5):
     # Filter out detections below the threshold
@@ -9,7 +10,7 @@ def filter_detections(detections, threshold=0.5):
 
 import sqlite3
 
-def extract_and_save_objects(image, boxes, save_dir, db_path, master_id="img_01"):
+def extract_and_save_objects(image, boxes, save_dir, db_path, master_id="img_02"):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     
@@ -32,9 +33,10 @@ def extract_and_save_objects(image, boxes, save_dir, db_path, master_id="img_01"
 
         # Insert metadata into the SQLite database
         cursor.execute('''
-        INSERT INTO segmented_objects (master_id, object_id, xmin, ymin, xmax, ymax, save_path)
+        INSERT INTO segmented_objects2 (master_id, object_id, xmin, ymin, xmax, ymax, save_path)
         VALUES (?, ?, ?, ?, ?, ?, ?)
         ''', (master_id, object_id, xmin, ymin, xmax, ymax, save_path))
 
     conn.commit()
     conn.close()
+

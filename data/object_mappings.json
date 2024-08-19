@@ -1,0 +1,30 @@
+[
+    {
+        "object_id": "img_02_obj_1.jpg",
+        "master_image_id": "img_02",
+        "description": "a man wearing a green t shirt with the words so broke a tent on it",
+        "text_data": "S0 BROKE iCANT PAY ATTENTION",
+        "summary": "A man wearing a green t shirt with the words so broke"
+    },
+    {
+        "object_id": "img_02_obj_2.jpg",
+        "master_image_id": "img_02",
+        "description": "two people wearing t shirts that say ` ` ` ` ` ` ` ` ` ` ` `",
+        "text_data": "50 BROKE So BROKE iCANT PAY CANT PAy ATTENTION ATTENTIOM",
+        "summary": "Two people wearing t shirts that say 50 BROKE So"
+    },
+    {
+        "object_id": "img_02_obj_3.jpg",
+        "master_image_id": "img_02",
+        "description": "a man and woman standing in front of a white wall",
+        "text_data": "",
+        "summary": "Video shows a man and woman standing in front of a white"
+    },
+    {
+        "object_id": "img_02_obj_4.jpg",
+        "master_image_id": "img_02",
+        "description": "a woman wearing a green t shirt with the words `'s on it",
+        "text_data": "So BROKE CANT PAy ATTENTIO",
+        "summary": "Woman wearing a green t shirt with the words `'s"
+    }
+]
