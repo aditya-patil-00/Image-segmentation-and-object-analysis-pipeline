@@ -16,6 +16,7 @@ def create_database(db_path):
         xmax INTEGER,
         ymax INTEGER,
         save_path TEXT
+        description TEXT
     )
     ''')
 
