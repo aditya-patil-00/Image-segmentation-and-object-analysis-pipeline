@@ -58,7 +58,7 @@ def main(image_path):
     visualize_segments(image_path, boxes, labels, scores, output_path=out_path)
 
     # Extract and save each object
-    segmented_objects_dir = os.path.join(par_dir, 'data', 'segmented_objects')
+    segmented_objects_dir = os.path.join(par_dir, 'data', 'segmented_objects2')
     extract_and_save_objects(image, boxes, segmented_objects_dir, db_path)
 
 img_path = os.path.join(par_dir, 'data', 'input_images', 'sample image2.jpg')
