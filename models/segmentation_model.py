@@ -3,6 +3,7 @@ from transformers import AutoImageProcessor, DetrForSegmentation
 from PIL import Image
 import os
 import sys
+import sqlite3
 
 curr_dir = os.getcwd()
 par_dir = os.path.dirname(curr_dir)
@@ -13,7 +14,7 @@ sys.path.append(par_dir)
 from Utils.preprocess import preprocess
 from Utils.visualization import visualize_segments
 from Utils.postprocess import extract_and_save_objects
-from models import segment_obj
+from models.segment_obj import create_database
 
 def load_model():
     # Load pre-trained DETR model and processor
@@ -38,32 +39,64 @@ def segment(model, processor, image):
 
     return boxes, labels, scores
 
-def main(image_path):
+def visualize_and_save(image_path, boxes, labels, scores, output_path):
+    """Visualize the segmented image and save it."""
+    visualize_segments(image_path, boxes, labels, scores, output_path=output_path)
 
-    curr_dir = os.getcwd()
-    par_dir = os.path.dirname(curr_dir)
-    db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
-
-    segment_obj.create_database(db_path)
-
-    # Load the segmentation model and processor
-    model, processor = load_model()
-    # Preprocess the image
-    image = preprocess(image_path)  # This should return a PIL image
-    # Perform segmentation
-    boxes, labels, scores = segment(model, processor, image)
-    # Prepare the output path
-    out_path = os.path.join(par_dir, 'data', 'output', 'segmented2.jpg')
-    # Visualize and save the segmented image
-    visualize_segments(image_path, boxes, labels, scores, output_path=out_path)
-
-    # Extract and save each object
-    segmented_objects_dir = os.path.join(par_dir, 'data', 'segmented_objects2')
+def extract_objects(image, boxes, segmented_objects_dir, db_path):
+    """Extract and save segmented objects."""
     extract_and_save_objects(image, boxes, segmented_objects_dir, db_path)
 
-img_path = os.path.join(par_dir, 'data', 'input_images', 'sample image2.jpg')
+def process_image(image_path):
+    """Process the image: load model, segment, visualize, and extract objects."""
+    # Load the segmentation model and processor
+    model, processor = load_model()
+    
+    # Preprocess the image
+    image = preprocess(image_path)  # This should return a PIL image
+    
+    # Perform segmentation
+    boxes, labels, scores = segment(model, processor, image)
+    
+    # Prepare the output path
+    output_path = os.path.join(par_dir, 'data', 'output', 'segmented_image.jpg')
+    
+    # Visualize and save the segmented image
+    visualize_and_save(image_path, boxes, labels, scores, output_path)
 
-if __name__ == "__main__":
-    image_path = img_path
-    print(image_path)
-    main(image_path)
+    # Extract and save each object
+    segmented_objects_dir = os.path.join(par_dir, 'data', 'segmented_image_objects')
+    db_path = os.path.join(par_dir, 'data', 'segmented_image_objects.db')
+    create_database(db_path)
+
+    extract_objects(image, boxes, segmented_objects_dir, db_path)
+
+#def main(image_path):
+#
+#    curr_dir = os.getcwd()
+#    par_dir = os.path.dirname(curr_dir)
+#    db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
+#
+#    segment_obj.create_database(db_path)
+#
+#    # Load the segmentation model and processor
+#    model, processor = load_model()
+#    # Preprocess the image
+#    image = preprocess(image_path)  # This should return a PIL image
+#    # Perform segmentation
+#    boxes, labels, scores = segment(model, processor, image)
+#    # Prepare the output path
+#    out_path = os.path.join(par_dir, 'data', 'output', 'segmented2.jpg')
+#    # Visualize and save the segmented image
+#    visualize_segments(image_path, boxes, labels, scores, output_path=out_path)
+#
+#    # Extract and save each object
+#    segmented_objects_dir = os.path.join(par_dir, 'data', 'segmented_objects2')
+#    extract_and_save_objects(image, boxes, segmented_objects_dir, db_path)
+#
+#img_path = os.path.join(par_dir, 'data', 'input_images', 'sample image2.jpg')
+#
+#if __name__ == "__main__":
+#    image_path = img_path
+#    print(image_path)
+#    main(image_path)

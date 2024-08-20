@@ -7,16 +7,14 @@ def create_database(db_path):
 
     # Create a table to store segmented object metadata
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS segmented_objects2 (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+    CREATE TABLE IF NOT EXISTS segmented_image_objects(
         master_id TEXT,
-        object_id TEXT,
+        object_id TEXT PRIMARY KEY,
         xmin INTEGER,
         ymin INTEGER,
         xmax INTEGER,
         ymax INTEGER,
         save_path TEXT
-        description TEXT
     )
     ''')
 
@@ -26,6 +24,6 @@ def create_database(db_path):
 # Define the database path
 curr_dir = os.getcwd()
 par_dir = os.path.dirname(curr_dir)
-db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
+db_path = os.path.join(par_dir, 'data', 'segmented_image_objects.db')
 
 create_database(db_path)

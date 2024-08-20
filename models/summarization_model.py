@@ -15,16 +15,16 @@ def add_summary_column(db_path):
     cursor = conn.cursor()
 
     # Check if the 'summary' column already exists
-    cursor.execute("PRAGMA table_info(segmented_objects2)")
+    cursor.execute("PRAGMA table_info(segmented_image_objects)")
     columns = [col[1] for col in cursor.fetchall()]
     
     if 'summary' not in columns:
         # Add the 'summary' column if it doesn't exist
         cursor.execute('''
-            ALTER TABLE segmented_objects2
+            ALTER TABLE segmented_image_objects
             ADD COLUMN summary TEXT
         ''')
-        print("Added 'summary' column to 'segmented_objects2' table.")
+        print("Added 'summary' column to 'segmented_image_objects' table.")
     else:
         print("'summary' column already exists.")
     
@@ -35,14 +35,14 @@ def summarize_and_store(db_path, summarizer):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT object_id, description, text_data FROM segmented_objects2")
+    cursor.execute("SELECT object_id, description, text_data FROM segmented_image_objects WHERE summary is NULL")
     objects = cursor.fetchall()
 
     for object_id, description, text_data in objects:
         combined_text = f"Description : {description}. Extracted Text : {text_data}"
         summary = generate_summary(summarizer, combined_text)
         cursor.execute('''
-            UPDATE segmented_objects2
+            UPDATE segmented_image_objects
             SET summary = ?
             WHERE object_id = ?
         ''', (summary, object_id))
@@ -51,11 +51,7 @@ def summarize_and_store(db_path, summarizer):
     conn.commit()
     conn.close()
 
-def main():
-    curr_dir = os.getcwd()
-    par_dir = os.path.dirname(curr_dir)
-    db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
-
+def summarize(db_path):
     # Load the summarization model
     summarizer = load_summarization_model()
 
@@ -64,6 +60,13 @@ def main():
 
     # Step 2: Generate and store summaries in the database
     summarize_and_store(db_path, summarizer)
+
+def main():
+    curr_dir = os.getcwd()
+    par_dir = os.path.dirname(curr_dir)
+    db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
+
+    summarize(db_path)
 
 if __name__ == "__main__":
     main()

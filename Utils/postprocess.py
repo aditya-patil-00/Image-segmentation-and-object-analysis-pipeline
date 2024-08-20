@@ -10,7 +10,7 @@ def filter_detections(detections, threshold=0.5):
 
 import sqlite3
 
-def extract_and_save_objects(image, boxes, save_dir, db_path, master_id="img_02"):
+def extract_and_save_objects(image, boxes, save_dir, db_path, master_id="img_01"):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     
@@ -25,18 +25,29 @@ def extract_and_save_objects(image, boxes, save_dir, db_path, master_id="img_02"
         cropped_object = image.crop((xmin, ymin, xmax, ymax))
         
         # Create a unique object ID
-        object_id = f"{master_id}_obj_{i+1}.jpg"
-        save_path = os.path.join(save_dir, object_id)
+        object_id = f"{master_id}_obj_{i+1}"
+        save_path = os.path.join(save_dir, f"{object_id}.jpg")
         
         # Save the cropped object image
         cropped_object.save(save_path)
 
-        # Insert metadata into the SQLite database
-        cursor.execute('''
-        INSERT INTO segmented_objects2 (master_id, object_id, xmin, ymin, xmax, ymax, save_path)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (master_id, object_id, xmin, ymin, xmax, ymax, save_path))
+        # Check if the object_id already exists in the database
+        cursor.execute('SELECT COUNT(*) FROM segmented_image_objects WHERE object_id = ?', (object_id,))
+        exists = cursor.fetchone()[0]
+
+        if exists:
+            # If the object_id exists, update the existing record
+            cursor.execute('''
+            UPDATE segmented_image_objects
+            SET xmin = ?, ymin = ?, xmax = ?, ymax = ?, save_path = ?
+            WHERE object_id = ?
+            ''', (xmin, ymin, xmax, ymax, save_path, object_id))
+        else:
+            # If the object_id does not exist, insert a new record
+            cursor.execute('''
+            INSERT INTO segmented_image_objects (master_id, object_id, xmin, ymin, xmax, ymax, save_path)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (master_id, object_id, xmin, ymin, xmax, ymax, save_path))
 
     conn.commit()
     conn.close()
-

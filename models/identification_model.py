@@ -22,22 +22,22 @@ def add_description_column(db_path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute("PRAGMA table_info(segmented_objects2)")
+    cursor.execute("PRAGMA table_info(segmented_image_objects)")
     columns = [col[1] for col in cursor.fetchall()]
     
     if 'description' not in columns:
         cursor.execute('''
-            ALTER TABLE segmented_objects2
+            ALTER TABLE segmented_image_objects
             ADD COLUMN description TEXT
         ''')
-        print("Added 'description' column to 'segmented_objects2' table.")
+        print("Added 'description' column to 'segmented_image_objects' table.")
     else:
         print("'description' column already exists.")
     
     conn.commit()
     conn.close()
 
-def main(db_path):
+def update_descriptions(db_path):
     # Load the captioning model
     model, processor = load_captioning_model()
 
@@ -46,13 +46,13 @@ def main(db_path):
     cursor = conn.cursor()
 
     # Get all objects that need identification
-    cursor.execute("SELECT object_id, save_path FROM segmented_objects2")
+    cursor.execute("SELECT object_id, save_path FROM segmented_image_objects WHERE description is NULL")
     objects = cursor.fetchall()
 
     for object_id, save_path in objects:
         description = generate_description(model, processor, save_path)
         cursor.execute('''
-            UPDATE segmented_objects2
+            UPDATE segmented_image_objects
             SET description = ?
             WHERE object_id = ?
         ''', (description, object_id))
@@ -66,4 +66,4 @@ if __name__ == "__main__":
     par_dir = os.path.dirname(curr_dir)
     db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
     add_description_column(db_path)
-    main(db_path)
+    update_descriptions(db_path)
