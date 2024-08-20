@@ -13,10 +13,25 @@ from models.summarization_model import summarize
 
 from Utils.annotations import generate_annotated_image
 
-def clear_output(dir):
-    if os.path.exists(dir):
-        shutil.rmtree(dir)
-    os.makedirs(dir, exist_ok=True)
+def clear_outputs():
+    """
+    Clear all output directories including segmented images, object images, and database.
+    """
+    # Define directories to clear
+    directories = [
+        os.path.join("..","data", "input_images"),
+        os.path.join("..","data", "output"),
+        os.path.join("..","data", "segmented_image_objects"),
+    ]
+    db = os.path.join("..","data", "segmented_image_objects.db")
+    
+    for directory in directories:
+        if os.path.exists(directory):
+            shutil.rmtree(directory)
+        os.makedirs(directory, exist_ok=True)
+    
+    if os.path.exists(db):
+        os.remove(db)
 
 def file_upload_section():
     st.title("Object Segmentation and Analysis Pipeline")
@@ -24,7 +39,8 @@ def file_upload_section():
 
     if uploaded_file:
         input_dir = os.path.join("..", "data", "input_images")
-        clear_output(input_dir)
+        #clear existing outputs(if any)
+        clear_outputs() 
         image_path = os.path.join(input_dir, "input_image.jpg")
         with open(image_path, "wb") as f:
             f.write(uploaded_file.getbuffer())

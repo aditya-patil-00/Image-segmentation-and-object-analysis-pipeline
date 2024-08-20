@@ -1,5 +1,5 @@
 import torch
-from transformers import AutoImageProcessor, DetrForSegmentation
+from transformers import DetrImageProcessor, DetrForSegmentation
 from PIL import Image
 import os
 import sys
@@ -18,7 +18,7 @@ from models.segment_obj import create_database
 
 def load_model():
     # Load pre-trained DETR model and processor
-    processor = AutoImageProcessor.from_pretrained("facebook/detr-resnet-50-panoptic")
+    processor = DetrImageProcessor.from_pretrained("facebook/detr-resnet-50-panoptic")
     model = DetrForSegmentation.from_pretrained("facebook/detr-resnet-50-panoptic")
     model.eval()
     return model, processor
@@ -70,33 +70,3 @@ def process_image(image_path):
     create_database(db_path)
 
     extract_objects(image, boxes, segmented_objects_dir, db_path)
-
-#def main(image_path):
-#
-#    curr_dir = os.getcwd()
-#    par_dir = os.path.dirname(curr_dir)
-#    db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
-#
-#    segment_obj.create_database(db_path)
-#
-#    # Load the segmentation model and processor
-#    model, processor = load_model()
-#    # Preprocess the image
-#    image = preprocess(image_path)  # This should return a PIL image
-#    # Perform segmentation
-#    boxes, labels, scores = segment(model, processor, image)
-#    # Prepare the output path
-#    out_path = os.path.join(par_dir, 'data', 'output', 'segmented2.jpg')
-#    # Visualize and save the segmented image
-#    visualize_segments(image_path, boxes, labels, scores, output_path=out_path)
-#
-#    # Extract and save each object
-#    segmented_objects_dir = os.path.join(par_dir, 'data', 'segmented_objects2')
-#    extract_and_save_objects(image, boxes, segmented_objects_dir, db_path)
-#
-#img_path = os.path.join(par_dir, 'data', 'input_images', 'sample image2.jpg')
-#
-#if __name__ == "__main__":
-#    image_path = img_path
-#    print(image_path)
-#    main(image_path)
