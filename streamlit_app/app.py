@@ -1,10 +1,13 @@
 import os
 import sys
 import streamlit as st
+from pathlib import Path
+#curr_dir = os.getcwd()
+#par_dir = os.path.dirname(curr_dir)
+#sys.path.append(par_dir)
 
-curr_dir = os.getcwd()
-par_dir = os.path.dirname(curr_dir)
-sys.path.append(par_dir)
+project_root = Path(__file__).resolve().parent.parent
+sys.path.append(str(project_root))
 
 from components import (
     file_upload_section,
@@ -19,15 +22,21 @@ from models.identification_model import update_descriptions, add_description_col
 from models.text_extraction import extract_and_store_text, add_text_column
 from models.summarization_model import summarize
 
-image_path = os.path.join(par_dir, 'data', 'input_images', 'input_image.jpg')
-db_path = os.path.join(par_dir, 'data', 'segmented_image_objects.db')
-output_path = os.path.join(par_dir, 'data', 'output')
+image_path = os.path.join('..','data', 'input_images', 'input_image.jpg')
+db_path = os.path.join('..','data', 'segmented_image_objects.db')
+output_path = os.path.join('..','data', 'output')
 
 def main():
     image_path = file_upload_section()
     if image_path:
+        print(image_path)
         process_image(image_path)
+
+        print(output_path)
+
         display_segmented_image()
+
+        print(db_path)
 
         generate_annotated_image(image_path, db_path, output_path)
         display_annotated_image(output_path)
