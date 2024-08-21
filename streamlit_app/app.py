@@ -1,5 +1,10 @@
 import os
+import sys
 import streamlit as st
+
+curr_dir = os.getcwd()
+par_dir = os.path.dirname(curr_dir)
+sys.path.append(par_dir)
 
 from components import (
     file_upload_section,
@@ -14,13 +19,9 @@ from models.identification_model import update_descriptions, add_description_col
 from models.text_extraction import extract_and_store_text, add_text_column
 from models.summarization_model import summarize
 
-# Get the base directory (where the app.py is located)
-base_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Define paths relative to the base directory
-image_path = os.path.join(base_dir, '..', 'data', 'input_images', 'input_image.jpg')
-db_path = os.path.join(base_dir, '..', 'data', 'segmented_image_objects.db')
-output_path = os.path.join(base_dir, '..', 'data', 'output')
+image_path = os.path.join(par_dir, 'data', 'input_images', 'input_image.jpg')
+db_path = os.path.join(par_dir, 'data', 'segmented_image_objects.db')
+output_path = os.path.join(par_dir, 'data', 'output')
 
 def main():
     image_path = file_upload_section()

@@ -5,9 +5,6 @@ from PIL import Image
 import pandas as pd
 import sqlite3
 
-# Get the base directory (where the app.py is located)
-base_dir = os.path.dirname(os.path.abspath(__file__))
-
 # Import your models here
 from models.segmentation_model import process_image
 from models.identification_model import update_descriptions, add_description_column
@@ -22,11 +19,11 @@ def clear_outputs():
     """
     # Define directories to clear
     directories = [
-        os.path.join(base_dir, '..', "data", "input_images"),
-        os.path.join(base_dir, '..', "data", "output"),
-        os.path.join(base_dir, '..', "data", "segmented_image_objects"),
+        os.path.join("..","data", "input_images"),
+        os.path.join("..","data", "output"),
+        os.path.join("..","data", "segmented_image_objects"),
     ]
-    db = os.path.join(base_dir, '..', "data", "segmented_image_objects.db")
+    db = os.path.join("..","data", "segmented_image_objects.db")
     
     for directory in directories:
         if os.path.exists(directory):
@@ -41,8 +38,8 @@ def file_upload_section():
     uploaded_file = st.file_uploader("Upload an Image", type=["jpg", "jpeg", "png"])
 
     if uploaded_file:
-        input_dir = os.path.join(base_dir, '..', "data", "input_images")
-        # Clear existing outputs (if any)
+        input_dir = os.path.join("..", "data", "input_images")
+        #clear existing outputs(if any)
         clear_outputs() 
         image_path = os.path.join(input_dir, "input_image.jpg")
         with open(image_path, "wb") as f:
@@ -53,7 +50,7 @@ def file_upload_section():
     return None
 
 def display_segmented_image():
-    segmented_image_path = os.path.join(base_dir, '..', "data", "output", "segmented_image.jpg")
+    segmented_image_path = os.path.join("..", "data", "output", "segmented_image.jpg")
     if os.path.exists(segmented_image_path):
         st.image(segmented_image_path, caption="Segmented Image", use_column_width=True)
     else:
