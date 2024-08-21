@@ -4,13 +4,10 @@ from PIL import Image
 from transformers import BlipForConditionalGeneration, BlipProcessor
 import sqlite3
 
-# Get the base directory (where identification_model.py is located)
-base_dir = os.path.dirname(os.path.abspath(__file__))
-
 # Load the BLIP model
 def load_captioning_model():
     processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
-    model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
+    model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")   
     return model, processor
 
 # Function to generate descriptions using BLIP
@@ -65,9 +62,8 @@ def update_descriptions(db_path):
     conn.close()
 
 if __name__ == "__main__":
-    # Assuming that the script is executed from the base directory or elsewhere
-    # Ensure the path is relative to the project structure
-    db_path = os.path.join(base_dir, '..', 'data', 'segmented_image_objects.db')
-    
+    curr_dir = os.getcwd()
+    par_dir = os.path.dirname(curr_dir)
+    db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
     add_description_column(db_path)
     update_descriptions(db_path)

@@ -5,13 +5,16 @@ import os
 import sys
 import sqlite3
 
+curr_dir = os.getcwd()
+par_dir = os.path.dirname(curr_dir)
+#utils_dir = os.path.join(par_dir, 'Utils')
+sys.path.append(par_dir)
+#print(utils_dir)
+
 from Utils.preprocess import preprocess
 from Utils.visualization import visualize_segments
 from Utils.postprocess import extract_and_save_objects
 from models.segment_obj import create_database
-
-# Get the base directory (where the segmentation_model.py is located)
-base_dir = os.path.dirname(os.path.abspath(__file__))
 
 def load_model():
     # Load pre-trained DETR model and processor
@@ -56,14 +59,14 @@ def process_image(image_path):
     boxes, labels, scores = segment(model, processor, image)
     
     # Prepare the output path
-    output_path = os.path.join(base_dir, '..', 'data', 'output', 'segmented_image.jpg')
+    output_path = os.path.join(par_dir, 'data', 'output', 'segmented_image.jpg')
     
     # Visualize and save the segmented image
     visualize_and_save(image_path, boxes, labels, scores, output_path)
 
     # Extract and save each object
-    segmented_objects_dir = os.path.join(base_dir, '..', 'data', 'segmented_image_objects')
-    db_path = os.path.join(base_dir, '..', 'data', 'segmented_image_objects.db')
+    segmented_objects_dir = os.path.join(par_dir, 'data', 'segmented_image_objects')
+    db_path = os.path.join(par_dir, 'data', 'segmented_image_objects.db')
     create_database(db_path)
 
     extract_objects(image, boxes, segmented_objects_dir, db_path)
