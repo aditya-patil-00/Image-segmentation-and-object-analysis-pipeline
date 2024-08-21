@@ -2,8 +2,8 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 import sqlite3
 
-curr_dir = os.getcwd()
-par_dir = os.path.dirname(curr_dir)
+#curr_dir = os.getcwd()
+#par_dir = os.path.dirname(curr_dir)
 
 def generate_annotated_image(image_path, db_path, output_path):
     # Open the original image

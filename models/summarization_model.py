@@ -2,8 +2,11 @@ import sqlite3
 import os
 from transformers import pipeline
 
+# Get the base directory (where summarization.py is located)
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
 def load_summarization_model():
-    summarizer = pipeline("summarization", max_length = 15, min_length = 5, model="facebook/bart-large-cnn")
+    summarizer = pipeline("summarization", max_length=15, min_length=5, model="facebook/bart-large-cnn")
     return summarizer
 
 def generate_summary(summarizer, text):
@@ -39,7 +42,7 @@ def summarize_and_store(db_path, summarizer):
     objects = cursor.fetchall()
 
     for object_id, description, text_data in objects:
-        combined_text = f"Description : {description}. Extracted Text : {text_data}"
+        combined_text = f"Description: {description}. Extracted Text: {text_data}"
         summary = generate_summary(summarizer, combined_text)
         cursor.execute('''
             UPDATE segmented_image_objects
@@ -62,9 +65,7 @@ def summarize(db_path):
     summarize_and_store(db_path, summarizer)
 
 def main():
-    curr_dir = os.getcwd()
-    par_dir = os.path.dirname(curr_dir)
-    db_path = os.path.join(par_dir, 'data', 'segmented_objects2.db')
+    db_path = os.path.join(base_dir, '..', 'data', 'segmented_image_objects.db')
 
     summarize(db_path)
 
