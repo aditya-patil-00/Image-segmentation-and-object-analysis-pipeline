@@ -22,8 +22,8 @@ def create_database(db_path):
     conn.close()
 
 # Define the database path
-curr_dir = os.getcwd()
-par_dir = os.path.dirname(curr_dir)
-db_path = os.path.join(par_dir, 'data', 'segmented_image_objects.db')
-
-create_database(db_path)
+#curr_dir = os.getcwd()
+#par_dir = os.path.dirname(curr_dir)
+#db_path = os.path.join(par_dir, 'data', 'segmented_image_objects.db')
+#
+#create_database(db_path)
