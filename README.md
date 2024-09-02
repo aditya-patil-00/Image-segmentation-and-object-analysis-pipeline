@@ -1,10 +1,8 @@
 <h1 align="center" id="title">Object Segmentation and Analysis Pipeline</h1>
 
 <p id="description">The Object Segmentation and Analysis Pipeline is a comprehensive application designed to process and analyze images through a series of machine learning models. The pipeline includes functionalities for image segmentation object identification text extraction and summarization. It provides a Streamlit-based web application for user interaction allowing users to upload images view segmented objects and analyze the results through an intuitive interface.</p>
-
   
-  
-<h2>Features</h2>
+<h2>Features and Architecture</h2>
 
 Here're some of the project's best features:
 
@@ -13,6 +11,8 @@ Here're some of the project's best features:
 *   Object Analysis: Extracts text from segmented objects and updates descriptions.
 *   Summarization: Generates summaries of the extracted data.
 *   Visualization: Displays segmented images object details and final output in a user-friendly format.
+
+![System Architecture](https://i.imgur.com/DJxqsEz.png)
 
 <h2>Installation Steps:</h2>
 
