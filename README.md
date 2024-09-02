@@ -42,7 +42,7 @@ streamlit run app.py
 
 <h2> Sample Screenshot </h2>
 
-![Streamlit Interface](https://imgur.com/a/P7jsPx8)
+![Streamlit Interface](https://i.imgur.com/yEZ96IA.png)
 
 <h2> License:</h2>
 
