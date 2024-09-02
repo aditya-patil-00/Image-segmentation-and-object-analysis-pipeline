@@ -19,13 +19,15 @@ Here're some of the project's best features:
 <p>1. Clone the repository in your local device</p>
 
 ```
-git clone https://github.com/aditya-patil-00/aditya-patil-wasserstoff-AiInternTask
+git clone https://github.com/aditya-patil-00/Image-segmentation-and-object-analysis-pipeline.git
 ```
 
 <p>2. Create virtual env</p>
 
 ```
-python -m venv myenv source myenv/bin/activate  # On Windows use `myenv\Scripts\activate`
+python -m venv myenv
+cd myenv/Scripts
+. activate
 ```
 
 <p>3. Install required packages</p>
