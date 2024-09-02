@@ -12,7 +12,7 @@ Here're some of the project's best features:
 *   Summarization: Generates summaries of the extracted data.
 *   Visualization: Displays segmented images object details and final output in a user-friendly format.
 
-![System Architecture](https://i.imgur.com/DJxqsEz.png)
+![System Architecture](https://i.imgur.com/lC4m8qF.png)
 
 <h2>Installation Steps:</h2>
 
