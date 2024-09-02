@@ -4,7 +4,7 @@
 
   
   
-<h2>🧐 Features</h2>
+<h2>Features</h2>
 
 Here're some of the project's best features:
 
@@ -14,7 +14,7 @@ Here're some of the project's best features:
 *   Summarization: Generates summaries of the extracted data.
 *   Visualization: Displays segmented images object details and final output in a user-friendly format.
 
-<h2>🛠️ Installation Steps:</h2>
+<h2>Installation Steps:</h2>
 
 <p>1. Clone the repository in your local device</p>
 
@@ -40,6 +40,10 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-<h2>🛡️ License:</h2>
+<h2> Sample Screenshot </h2>
+
+![Streamlit Interface](https://imgur.com/a/P7jsPx8)
+
+<h2> License:</h2>
 
 This project is licensed under the GPL-3.0 license
